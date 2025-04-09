@@ -98,6 +98,7 @@ public:
     }
 };
 
+
 // A class for admin
 class Admin
 {
@@ -118,12 +119,37 @@ public:
     }
 };
 
+class Customer
+{
+    private:
+    double Wallet = 100;
+
+public:
+    // Setter
+    void setWallet(double wallet)
+    {
+        Wallet = wallet;
+    }
+
+    // Getter
+    double getWallet()
+    {
+        return Wallet;
+    }
+};
+
 // Objects (Declare objects in global scope)
 Product globalProduct;
 Admin globalAdmin;
 
-// Functions
+Customer globalCustomer;
+Product CustomerProduct;
+
+// main Functions
 void Menu();
+void IncreaseWallet();
+
+//admin functions
 void AdminLogin();
 void AdminMenu();
 void AddProduct();
@@ -131,6 +157,14 @@ void RemoveProduct();
 void SearchProduct();
 void ShowAll();
 void Wallet();
+
+//customer functions
+void CustomerMenu();
+void ShowAllCustomer();
+void SearchProductCustomer();
+void addProductToCart();
+void CustomerWallet();
+void IncreaseWalletCustomer();
 
 // First menu
 void Menu()
@@ -152,7 +186,7 @@ void Menu()
     }
     else if (userChioce == 2)
     {
-        // Customer Menu
+        CustomerMenu();
     }
     else if (userChioce == 3)
     {
@@ -196,7 +230,7 @@ void AdminMenu()
     cout << "3. Search" << endl;
     cout << "4. Show All" << endl;
     cout << "5. Wallet" << endl;
-    cout << "6. Exit" << endl;
+    cout << "6. Exit to menu" << endl;
     cout << "Enter a number: ";
 
     int adminChoice;
@@ -237,6 +271,42 @@ void AdminMenu()
     {
         cout << "Invalid input...!" << endl;
         AdminMenu();
+    }
+}
+
+// Customer menu
+void CustomerMenu(){
+    cout << "1. View  All Products" << endl;
+    cout << "2. Search Products" << endl;
+    cout << "3. View Cart" << endl;
+    cout << "4. Check wallet" << endl;
+    cout << "5. Increase Wallet Value" << endl;
+    cout << "6. Exit to menu" << endl;
+
+    int Choice;
+    cin >> Choice;
+
+    if (Choice == 1){
+        ShowAllCustomer();
+    }
+    else if (Choice == 2){
+        addProductToCart();
+    }
+    else if (Choice == 3){
+        ShowAllCustomer();
+    }
+    else if (Choice == 4){
+        CustomerWallet();
+    }
+    else if (Choice == 5){
+        IncreaseWalletCustomer();
+    }
+    else if (Choice == 6){
+        Menu();
+    }
+    else{
+        cout << "Invalid choice" << endl;
+        CustomerMenu();
     }
 }
 
@@ -300,6 +370,64 @@ void AddProduct()
         cout << "Incorrect category" << endl;
         AddProduct();
     }
+}
+
+// Add to Cart / customer search 
+void addProductToCart()
+{
+        int Quantity = 0;
+        int choice = 0;
+        cout << "========== Add Product ==========" << endl;
+        cout << "Do you want to buy any of products? \n 1.yes \n 2.no): "; 
+        cin >> choice;
+        if (choice == 1){
+            cout << "Enter the name of the product you want to add to  the cart: ";
+            string name;
+            cin >> name;    
+            for (int i = 0; i < globalProduct.nameSize(); i++)
+            {
+                if (name == globalProduct.getName()[i])
+                {
+                    cout << "Enter the quantity: ";
+                    cin >> Quantity;
+                    if (Quantity > globalProduct.getQuantity()[i])
+                    {
+                        cout << "Not enough available!" << endl;
+                        CustomerMenu();
+                    }
+                    else
+                    {
+                        cout << "You have added " << name << " to your cart." << endl;
+                    CustomerProduct.setName(globalProduct.getName()[i]);
+                    CustomerProduct.setPrice(globalProduct.getPrice()[i]);
+                    CustomerProduct.setQuantity(globalProduct.getQuantity()[Quantity]);
+                    CustomerProduct.setCategory(globalProduct.getCategory()[i]);
+
+                    cout << "Price: " << globalProduct.getPrice()[i] << endl;
+                    cout << "Quantity: " << globalProduct.getQuantity()[i] << endl;
+                    cout << "Category: " << globalProduct.getCategory()[i] << endl;
+                    CustomerMenu();
+                    }
+                    
+                }
+                else
+                {
+                    cout << "There's no product by this name...!" << endl;
+                    CustomerMenu();
+                }
+            }
+            
+        }
+        else if (choice == 2)
+        {
+            CustomerMenu();
+        }
+        
+        else
+        {
+            cout << "Invalid input...!" << endl;
+            CustomerMenu();
+        }
 }
 
 // Remove product(admin)
@@ -379,7 +507,60 @@ void SearchProduct()
     }
 }
 
-// Show all
+// Show all products
+void ShowAllCustomer()
+{
+    int choice;
+    cout << "========== Show All Products ==========" << endl;
+
+    if (globalProduct.nameSize() == 0)
+    {
+        cout << "There's no product in the shop yet...!" << endl;
+        CustomerMenu();
+    }
+    else
+    {
+        for (int i = 0; i < globalProduct.nameSize(); i++)
+        {
+            cout << "Name: " << globalProduct.getName()[i] << endl;
+            cout << "Price: " << globalProduct.getPrice()[i] << endl;
+            cout << "Quantity: " << globalProduct.getQuantity()[i] << endl;
+            cout << "Category: " << globalProduct.getCategory()[i] << endl;
+            cout << "* ---------- *" << endl;
+        }
+        /// Ask if the user wants to buy a product
+        addProductToCart();
+    }
+
+}
+
+// Show all products in cart
+void ShowCart()
+{
+    int choice;
+    cout << "========== Show All Products ==========" << endl;
+
+    if (CustomerProduct.nameSize() == 0)
+    {
+        cout << "There's no product in the shop yet...!" << endl;
+        CustomerMenu();
+    }
+    else
+    {
+        for (int i = 0; i < CustomerProduct.nameSize(); i++)
+        {
+            cout << "Name: " << CustomerProduct.getName()[i] << endl;
+            cout << "Price: " << CustomerProduct.getPrice()[i] << endl;
+            cout << "Quantity: " << CustomerProduct.getQuantity()[i] << endl;
+            cout << "Category: " << CustomerProduct.getCategory()[i] << endl;
+            cout << "* ---------- *" << endl;
+        }
+        /// Ask if the user wants to buy a product
+    }
+
+}
+
+// Show all products
 void ShowAll()
 {
     cout << "========== Show All Products ==========" << endl;
@@ -403,7 +584,7 @@ void ShowAll()
     }
 }
 
-// Wallet
+// outputs the Admins wallet value
 void Wallet()
 {
     cout << "========== Wallet ==========" << endl;
@@ -411,6 +592,30 @@ void Wallet()
     AdminMenu();
 }
 
+
+// outputs the customers wallet value
+void CustomerWallet()
+{
+    cout << "========== Wallet ==========" << endl;
+    cout << "Credit of wallet: " << globalCustomer.getWallet() << endl;
+    CustomerMenu();
+}
+
+
+void IncreaseWalletCustomer()
+{
+    double increaseValue;
+    cout << "Enter the amount you want to add to your wallet: ";
+    cin >> increaseValue;
+    if (increaseValue < 0 || increaseValue > 10000)
+    {
+        cout << "Invalid amount. Please enter a positive value." << endl;
+        IncreaseWallet();
+    }
+
+    globalCustomer.setWallet(globalCustomer.getWallet() + increaseValue);
+    cout << "New wallet value: " << globalCustomer.getWallet() << endl;
+}
 int main()
 {
     Menu();
