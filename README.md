@@ -28,10 +28,5 @@ Gaming Shop is a simple console-based C++ application that simulates a gaming st
 3. If using the customer panel, interact with the available options.
 4. Follow on-screen instructions to manage or purchase products.
 
-## Contact us 📞
-M.Soheil Hosseini: canopus.soheilhosseini@gmail.com 
-<br>
-Mohammad Bijani: programmer.bjn@gmail.com
-
 ---
 ### Spring 2025
