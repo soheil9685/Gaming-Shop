@@ -477,7 +477,7 @@ void SearchProduct()
     string name;
     cin >> name;
 
-    // Find the product
+    // Find the productw
     if (globalProduct.nameSize() == 0)
     {
         cout << "There's no product in the shop!" << endl;
@@ -610,12 +610,14 @@ void IncreaseWalletCustomer()
     if (increaseValue < 0 || increaseValue > 10000)
     {
         cout << "Invalid amount. Please enter a positive value." << endl;
-        IncreaseWallet();
+        CustomerMenu();
     }
 
     globalCustomer.setWallet(globalCustomer.getWallet() + increaseValue);
     cout << "New wallet value: " << globalCustomer.getWallet() << endl;
+    CustomerMenu();
 }
+
 int main()
 {
     Menu();
