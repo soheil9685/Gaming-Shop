@@ -230,7 +230,8 @@ void AdminMenu()
     cout << "3. Search" << endl;
     cout << "4. Show All" << endl;
     cout << "5. Wallet" << endl;
-    cout << "6. Exit to menu" << endl;
+    cout << "6. Increase Wallet Value" << endl;
+    cout << "7. Exit to menu" << endl;
     cout << "Enter a number: ";
 
     int adminChoice;
@@ -378,7 +379,7 @@ void addProductToCart()
         int Quantity = 0;
         int choice = 0;
         cout << "========== Add Product ==========" << endl;
-        cout << "Do you want to buy any of products? \n 1.yes \n 2.no): "; 
+        cout << "Do you want to buy any of products? \n 1.yes \n 2.no "; 
         cin >> choice;
         if (choice == 1){
             cout << "Enter the name of the product you want to add to  the cart: ";
@@ -397,16 +398,28 @@ void addProductToCart()
                     }
                     else
                     {
-                        cout << "You have added " << name << " to your cart." << endl;
-                    CustomerProduct.setName(globalProduct.getName()[i]);
-                    CustomerProduct.setPrice(globalProduct.getPrice()[i]);
-                    CustomerProduct.setQuantity(globalProduct.getQuantity()[Quantity]);
-                    CustomerProduct.setCategory(globalProduct.getCategory()[i]);
+                        if(Quantity * globalProduct.getPrice()[i] > globalCustomer.getWallet())
+                        {
+                            cout << " your wallet doesn't have enough money "<< endl;
+                            CustomerMenu();
+                        }
+                        else 
+                        {
+                            globalCustomer.setWallet(Quantity * globalProduct.getPrice()[i] + globalCustomer.getWallet());
+                            globalAdmin.setWallet( globalAdmin.getWallet() - Quantity * globalProduct.getPrice()[i]);
 
-                    cout << "Price: " << globalProduct.getPrice()[i] << endl;
-                    cout << "Quantity: " << globalProduct.getQuantity()[i] << endl;
-                    cout << "Category: " << globalProduct.getCategory()[i] << endl;
-                    CustomerMenu();
+                            cout << "You have added " << name << " to your cart." << endl;
+                            CustomerProduct.setName(globalProduct.getName()[i]);
+                            CustomerProduct.setPrice(globalProduct.getPrice()[i]);
+                            CustomerProduct.setQuantity(globalProduct.getQuantity()[Quantity]);
+                            CustomerProduct.setCategory(globalProduct.getCategory()[i]);
+
+                            cout << "Price: " << globalProduct.getPrice()[i] << endl;   
+                            cout << "Quantity: " << globalProduct.getQuantity()[i] << endl;
+                            cout << "Category: " << globalProduct.getCategory()[i] << endl;
+                            CustomerMenu();
+                        }
+                        
                     }
                     
                 }
@@ -616,6 +629,22 @@ void IncreaseWalletCustomer()
     globalCustomer.setWallet(globalCustomer.getWallet() + increaseValue);
     cout << "New wallet value: " << globalCustomer.getWallet() << endl;
     CustomerMenu();
+}
+
+void IncreaseWalletAdmin()
+{
+    double increaseValue;
+    cout << "Enter the amount you want to add to your wallet: ";
+    cin >> increaseValue;
+    if (increaseValue < 0 || increaseValue > 10000)
+    {
+        cout << "Invalid amount. Please enter a positive value." << endl;
+        AdminMenu();
+    }
+
+    globalAdmin.setWallet(globalAdmin.getWallet() + increaseValue);
+    cout << "New wallet value: " << globalAdmin.getWallet() << endl;
+    AdminMenu();
 }
 
 int main()
